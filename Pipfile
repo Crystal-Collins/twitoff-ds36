@@ -13,6 +13,7 @@ python-dotenv = "*"
 scikit-learn = "*"
 sklearn = "*"
 numpy = "*"
+gunicorn = "*"
 
 [dev-packages]
 
