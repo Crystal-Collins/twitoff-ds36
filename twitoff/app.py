@@ -1,4 +1,5 @@
 '''flask app py file'''
+from os import getenv
 from flask import Flask, render_template, request
 from .models import DB, User, Tweet
 from .twitter import add_or_update_user
@@ -8,6 +9,7 @@ from .predict import predict_user
 
 
 def create_app():
+    '''Twitoff  factory: all pages we route to'''
 
     app = Flask(__name__)
 
@@ -18,27 +20,30 @@ def create_app():
 
     @app.route("/")
     def home():
+        '''the home route creates home page'''
         users = User.query.all()
-        # print(users)
         return render_template('base.html', title='Home', users=users)
+
+    @app.route("/reset")
+    def reset():
+        '''resets the DB when users click the button'''
+        DB.drop_all()
+        DB.create_all()
+        return render_template('base.html', title='Reset Database')
 
     @app.route("/update")
     def update():
+        '''updates the users list'''
         users = User.query.all()
         usernames = [user.username for user in users]
         for username in usernames:
             add_or_update_user(username)
         return render_template('base.html', title='Update Users')
 
-    @app.route("/reset")
-    def reset():
-        DB.drop_all()
-        DB.create_all()
-        return render_template('base.html', title='Reset Database')
-
     @app.route('/user', methods=['POST'])
     @app.route('/user/<name>', methods=['GET'])
     def user(name=None, message=''):
+        '''creates a route for adding users to DB for comparison'''
         name = name or request.value['user_name']
         try:
             if request.method == 'POST':
@@ -55,6 +60,7 @@ def create_app():
 
     @app.route('/compare', methods=['POST'])
     def compare():
+        '''final comparison with results'''
         user0, user1 = sorted(
             [request.values['user0'], request.values['user1']])
 

@@ -1,4 +1,4 @@
-'''twitter docstring'''
+'''twitter API connection'''
 
 import tweepy
 from os import getenv
@@ -8,7 +8,7 @@ from .models import User
 import spacy
 
 
-# our API keys
+# retrieve API keys
 key = getenv("TWITTER_API_KEY")
 secret = getenv("TWITTER_API_KEY_SECRET")
 
@@ -20,7 +20,7 @@ TWITTER = tweepy.API(TWITTER_AUTH)
 
 
 def add_or_update_user(username):
-    # get user data from twitter
+    '''get user data from twitter'''
     try:
         twitter_user = TWITTER.get_user(screen_name=username)
 
@@ -52,6 +52,7 @@ def add_or_update_user(username):
 
             DB.session.add(db_tweet)
 
+    # final step to save into the DB
     except Exception as error:
         print(f'Error when processing {username}: {error}')
         raise error
