@@ -61,8 +61,8 @@ def add_or_update_user(username):
 
 
 # Turn tweet text into word vector
-alp = spacy.load('my_model/')
+nlp = spacy.load('my_model/')
 
 
 def vectorize_tweet(tweet_text):
-    return alp(tweet_text).vector
+    return nlp(tweet_text).vector
