@@ -10,5 +10,4 @@ Specifics: <br/>
 - Hosted by Heroku <br/>
 <br/>
 Known Issues: <br/>
-- Currently unable to add new users, may be associated with Heroku/Github Auth token issue that Heroku is experiencing. <br/>
- Will update soon.
+- Currently unable to add new users, may be associated with Heroku/Github Auth token issue that Heroku is experiencing. <br/>Will update soon.
