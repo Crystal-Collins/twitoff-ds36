@@ -7,4 +7,8 @@ Twitter API <br/>
 Created with Flask <br/>
 Queries with SQLAlchemy <br/>
 Compares tweets with Logistic Regression and vectorization <br/>
-Hosted by Heroku
+Hosted by Heroku <br/>
+<br/>
+Known Issues: <br/>
+- Currently unable to add new users, may be associated with Heroku/Github Auth token issue that Heroku is experiencing. <br/>
+ Will update soon.
