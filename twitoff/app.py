@@ -1,6 +1,6 @@
 '''flask app py file'''
 from os import getenv
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from .models import DB, User, Tweet
 from .twitter import add_or_update_user
 from .predict import predict_user
@@ -38,25 +38,25 @@ def create_app():
         usernames = [user.username for user in users]
         for username in usernames:
             add_or_update_user(username)
-        return render_template('base.html', title='Update Users')
+        return redirect('/')
 
     @app.route('/user', methods=['POST'])
-    @app.route('/user/<name>', methods=['GET'])
-    def user(name=None, message=''):
+    @app.route('/user/<username>', methods=['GET'])
+    def user(username=None, message=''):
         '''creates a route for adding users to DB for comparison'''
-        name = name or request.value['user_name']
-        try:
-            if request.method == 'POST':
-                add_or_update_user(name)
-                message = f'User "{name}" was successfully added.'
+        if request.method == 'GET':
+            tweets = User.query.filter(User.username == username).one().tweets
 
-            tweets = User.query.filter(User.username == name).one().tweets
-
-        except Exception as e:
-            message = f'Error adding "{name}"": {e}'
+        if request.method == 'POST':
             tweets = []
-
-        return render_template('user.html', title=name, tweets=tweets, message=message)
+            try:
+                username = request.values['user_name']
+                add_or_update_user(username)
+                message = 'User {} Successfully Added'.format(username)
+            except Exception as e:
+                message = 'Error adding {}: {}'.format(username, e)
+        return render_template('user.html', title=username, tweets=tweets,
+                               message=message)
 
     @app.route('/compare', methods=['POST'])
     def compare():
